@@ -30,7 +30,7 @@ const Quiz = () => {
     data: quizData,
   } = useFetch(generateQuiz);
 
-    const {
+  const {
     loading: savingResult,
     fn: saveQuizResultFn,
     data: resultData,
@@ -52,10 +52,10 @@ const Quiz = () => {
     if (currentQuestion < quizData.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setShowExplanation(false);
-    }else{
-      finishQuiz()
+    } else {
+      finishQuiz();
     }
-  }
+  };
 
   const calculateScore = () => {
     let correct = 0;
@@ -77,7 +77,7 @@ const Quiz = () => {
     }
   };
 
-   const startNewQuiz = () => {
+  const startNewQuiz = () => {
     setCurrentQuestion(0);
     setAnswers([]);
     setShowExplanation(false);
@@ -85,7 +85,7 @@ const Quiz = () => {
     setResultData(null);
   };
 
-    // Show results if quiz is completed
+  // Show results if quiz is completed
   if (resultData) {
     return (
       <div className="mx-2">
@@ -93,8 +93,6 @@ const Quiz = () => {
       </div>
     );
   }
-
-
 
   if (!quizData) {
     return (
@@ -112,8 +110,12 @@ const Quiz = () => {
           </p>
         </CardContent>
         <CardFooter>
-          <Button className="w-full" onClick={generateQuizFn}>
-            Start Your Quiz
+          <Button
+            className="w-full cursor-pointer"
+            onClick={generateQuizFn}
+            disabled={generatingQuiz}
+          >
+            {generatingQuiz ? "⏳ Generating Quiz..." : "Start Your Quiz"}
           </Button>
         </CardFooter>
       </Card>
@@ -167,17 +169,13 @@ const Quiz = () => {
           </Button>
         )}
 
-
-          <Button
-            onClick={handleNext}
-            className="ml-auto"
-            disabled={!answers[currentQuestion]}
-          >
-            {currentQuestion<quizData.length-1
-            ? "Next"
-            :"Submit"}
-          </Button>
-
+        <Button
+          onClick={handleNext}
+          className="ml-auto"
+          disabled={!answers[currentQuestion]}
+        >
+          {currentQuestion < quizData.length - 1 ? "Next" : "Submit"}
+        </Button>
       </CardFooter>
     </Card>
   );

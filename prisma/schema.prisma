@@ -49,6 +49,7 @@ model User {
   assessments Assessment[]
   resume      Resume?
   coverLetter CoverLetter[]
+  voiceInterviews VoiceInterview[]
 
 }
 
@@ -117,3 +118,20 @@ model IndustryInsight {
   @@index([industry])
 }
 
+
+
+model VoiceInterview {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+  jobPosition     String
+  jobDescription  String
+  duration        Int
+  questionsList   Json[]
+  userAnswers     Json?
+  feedback        String?   @db.Text
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId])
+}

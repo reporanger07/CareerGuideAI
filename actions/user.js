@@ -98,3 +98,14 @@ export async function getUserOnboardingStatus() {
     throw new Error("Error getting user onboarding status");
   }
 }
+
+//--------------------------------------------------------------
+export async function getDbUser() {
+  const { userId } = auth(); // Clerk userId
+
+  const user = await db.user.findUnique({
+    where: { clerkUserId: userId },
+  });
+
+  return user;
+}

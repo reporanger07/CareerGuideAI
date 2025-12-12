@@ -2,12 +2,17 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/lib/prisma";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+//import { GoogleGenerativeAI } from "@google/generative-ai";
 import { revalidatePath } from "next/cache";
+import Anthropic from "@anthropic-ai/sdk";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+// const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
+
+const client = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY
+});
 
 export async function saveResume(content) {
 
@@ -83,10 +88,20 @@ export async function improveWithAI({current,type}){
     Format the response as a single paragraph without any additional text or explanations.
   `;
     try{
-        const result=await model.generateContent(prompt)
-        const response=result.response;
-        const improvedresponse=response.text().trim();
-        return improvedresponse;
+        const response = await client.messages.create({
+  model: "claude-sonnet-4-20250514",
+  max_tokens: 4000,
+  temperature: 0.7,
+  messages: [
+    {
+      role: "user",
+      content: prompt,
+    },
+  ],
+});
+
+const improvedResponse = response.content[0].text.trim();
+return improvedResponse;
     }catch(error){
         console.error("error improving resume",error);
         throw new Error("Error improving resume");

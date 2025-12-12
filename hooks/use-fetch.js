@@ -1,3 +1,4 @@
+"use client"
 import { Toaster } from "@/components/ui/sonner";
 import { useState } from "react";
 import { toast } from "sonner";
