@@ -55,5 +55,5 @@ It brings together resume building, skill assessment, and voice-based AI intervi
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/career-guide-ai.git
+git clone https://github.com/reporanger07/career-guide-ai.git
 cd career-guide-ai
